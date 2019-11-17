@@ -118,6 +118,7 @@ for index_price in Index_table_price:
 result_wines = []
 for wine in sorted_wines:
     dict_wine = from_namedtuple_to_dict(wine)
+#    print(wine.price, wine.title)
     result_wines.append(dict_wine)
 
 out_file(result_wines, 'winedata_full.json')
@@ -187,10 +188,21 @@ statistics["wine"] = sort_wine
  #   * `underrated_country`
  #   * `most_active_commentator`
 
+#в случае коллизий тут и далее делаем список.
 most_expensive_wine = sorted_wines[0]
 cheapest_wine = sorted_wines[-1]
-statistics["most_expensive_wine"] = most_expensive_wine.title.replace('â','ae') #вместо немецких вставить общепринятые символы
-statistics["cheapest_wine"] = cheapest_wine.title.replace('â','ae')
+lst_cheapest_wines = []
+i = len(sorted_wines) - 1
+while i >= 0:
+    next_wine = sorted_wines[i]
+    if cheapest_wine.price == next_wine.price:
+        lst_cheapest_wines.append(next_wine.title.replace('â','ae').replace('ü','ue'))
+    else:
+        break
+    i -= 1
+
+statistics["most_expensive_wine"] = most_expensive_wine.title.replace('â','ae').replace('ü','ue') #вместо немецких вставить общепринятые символы
+statistics["cheapest_wine"] = lst_cheapest_wines
 
     #   * `most_active_commentator`
     #   * `most_expensive_coutry`
@@ -207,13 +219,6 @@ for wine in sorted_wines:
     dict_country[wine.country][0] += 1
     dict_country[wine.country][1] += wine.price
     dict_country[wine.country][2] += int(wine.points)
-
-max_ = 0
-for commentator,count_wines in dict_commentator.items():
-    if count_wines > max_:
-        max_ = count_wines
-        most_active_commentator = commentator
-statistics["most_active_commentator"] = most_active_commentator
 
     #   * `highest_score`
 lowest_score = int(sorted_wines[0].points)
@@ -254,6 +259,19 @@ statistics['most_rated_country'] = most_rated_country
 statistics['underrated_country'] = underrated_country
 statistics['most_expensive_coutry'] = most_expensive_coutry
 statistics['cheapest_coutry'] = cheapest_coutry
+
+#------------------------------------------------------
+max_ = 0
+for count_wines in dict_commentator.values():
+    if count_wines > max_:
+        max_ = count_wines
+most_active_commentator = []
+for commentator,count_wines in dict_commentator.items():
+    if count_wines == max_ and commentator is not None:
+        most_active_commentator.append(commentator)
+
+statistics["most_active_commentator"] = most_active_commentator
+#-------------------------------------------------------
 
 out_dict = {}
 out_dict["statistics"] = statistics
