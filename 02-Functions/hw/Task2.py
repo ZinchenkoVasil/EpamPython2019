@@ -20,7 +20,7 @@ def atom(*args):
     if len(args) == 1:
         attribute = args[0]
     elif len(args) > 1:
-        raise Exception("The count of arguments must be 0 or 1.")
+        raise ValueError("The count of arguments must be 0 or 1.")
     def get_value():
         return attribute
     def set_value(attr):

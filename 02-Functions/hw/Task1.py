@@ -50,7 +50,7 @@ def letters_range(*args, **kwargs): #start='a',stop=None,step=1):
         stop = args[0]
         step = 1
     else:
-        raise Exception("The count of arguments must be 1-3.")
+        raise ValueError("The count of arguments must be 1-3.")
 
     num = ord(start)
     while ((step > 0) and (num < ord(stop))) or ((step < 0) and (num > ord(stop))):
@@ -71,13 +71,13 @@ def letters_range(*args, **kwargs): #start='a',stop=None,step=1):
 
 #>>>letters_range('g')
 #['a', 'b', 'c', 'd', 'e', 'f']
-
-print(list(letters_range('g', 'p')))
+if __name__ == "__main__":
+    print(list(letters_range('g', 'p')))
 #['g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o']
 
-print(list(letters_range('g', 'p', **{'l': 7, 'o': 0})))
+    print(list(letters_range('g', 'p', **{'l': 7, 'o': 0})))
 #['g', 'h', 'i', 'j', 'k', '7', 'm', 'n', '0']
 
-print(list(letters_range('p', 'g', -2)))
+    print(list(letters_range('p', 'g', -2)))
 #['p', 'n', 'l', 'j', 'h']
 
