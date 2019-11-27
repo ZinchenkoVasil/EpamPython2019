@@ -42,17 +42,17 @@ def atom(*args):
     functions["delete_value"] = delete_value
     return functions
 
+if __name__ == "__main__":
+    func = atom("t-26")
+    print(func["get_value"]())
+    print(func["set_value"]("t-34"))
+    print(func["get_value"]())
+    func["delete_value"]()
+    print(func["get_value"]())
 
-func = atom("t-26")
-print(func["get_value"]())
-print(func["set_value"]("t-34"))
-print(func["get_value"]())
-func["delete_value"]()
-print(func["get_value"]())
-
-func["set_value"]("t-34")
-func = atom()
-print(func["get_value"]())
+    func["set_value"]("t-34")
+    func = atom()
+    print(func["get_value"]())
 
 
 

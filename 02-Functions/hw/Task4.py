@@ -1,5 +1,9 @@
 import inspect
 from Task1 import letters_range
+from Task2 import atom
+from Task3 import make_it_count
+from Task3 import inc
+
 
 def modified_func(func, *fixated_args, **fixated_kwargs):
     """
@@ -57,6 +61,24 @@ print(a)
 new_func = modified_func(any)
 a = new_func([True,False])
 print(a)
+
+#Task2
+new_func = modified_func(atom)
+func = new_func("t-34")
+print(func["get_value"]())
+
+#Task3
+counter_inc = [0]
+new_func = modified_func(make_it_count,inc)
+new_inc = new_func(counter_inc)
+new_inc(0)
+new_inc(1)
+new_inc(2)
+print("Count of calls:", counter_inc[0])
+
+
+
+
 
 
 

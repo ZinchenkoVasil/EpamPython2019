@@ -16,10 +16,11 @@ def inc(i):
     i += 1
     return i
 
-counter_inc = [0]
-new_inc = make_it_count(inc, counter_inc)
+if __name__ == "__main__":
+    counter_inc = [0]
+    new_inc = make_it_count(inc, counter_inc)
 
-new_inc(0)
-new_inc(1)
-new_inc(2)
-print("Count of calls:", counter_inc[0])
+    new_inc(0)
+    new_inc(1)
+    new_inc(2)
+    print("Count of calls:", counter_inc[0])
