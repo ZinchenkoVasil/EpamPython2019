@@ -7,14 +7,58 @@ from Task3 import inc
 
 def modified_func(func, *fixated_args, **fixated_kwargs):
     """
-    A func implementation of <имя функции func>
-    with pre-applied arguments being:
-    <перечисление имен и значений переданных fixated_args и fixated_kwargs;
-    если ключевые аргументы переданны как позиционные - соотнести их с именами
-    из function definition
+    A func implementation of <sorted>
+    with pre-applied arguments being: list [1,2,3];
     >
     source_code:
-       ...
+    new_func = modified_func(sorted,[1,2,3])
+    lst_result = new_func(reverse=True)
+
+    A func implementation of <letters_range> (Task1)
+    with pre-applied arguments being: start, stop;
+    >
+    source_code:
+    new_func = modified_func(letters_range,'g', 'p')
+    lst_result = new_func(3)
+
+    A func implementation of <min>
+    with pre-applied arguments being: numbers;
+    >
+    source_code:
+    new_func = modified_func(min,4,-5,6)
+    a = new_func(1,2,key=abs)
+
+    A func implementation of <max>
+    with pre-applied arguments being: numbers;
+    >
+    source_code:
+    new_func = modified_func(max,4,-5,-6)
+    a = new_func(-7,2,key=abs)
+
+    A func implementation of <any>
+    with pre-applied arguments being: booleans (True or False);
+    >
+    source_code:
+    new_func = modified_func(any)
+    a = new_func([True,False])
+    print(a)
+
+    A func implementation of <atom> (Task 2)
+    with pre-applied arguments being: not;
+    >
+    source_code:
+    new_func = modified_func(atom)
+    func = new_func("t-34")
+    print(func["get_value"]())
+
+    A func implementation of <make_it_count>
+    with pre-applied arguments being: function 'inc';
+    >
+    source_code:
+    counter_inc = [0]
+    new_func = modified_func(make_it_count,inc)
+    new_inc = new_func(counter_inc)
+
     """
 
  #   args, varargs, varkw, defaults)
@@ -47,17 +91,21 @@ def modified_func(func, *fixated_args, **fixated_kwargs):
 
 
 new_func = modified_func(sorted,[1,2,3])
-a = new_func(reverse=True)
-print(a)
+lst_result = new_func(reverse=True)
+print(lst_result)
+
 new_func = modified_func(letters_range,'g', 'p')
-a = new_func(3)
-print(list(a))
+lst_result = new_func(3)
+print(list(lst_result))
+
 new_func = modified_func(min,4,-5,6)
 a = new_func(1,2,key=abs)
 print(a)
+
 new_func = modified_func(max,4,-5,-6)
 a = new_func(-7,2,key=abs)
 print(a)
+
 new_func = modified_func(any)
 a = new_func([True,False])
 print(a)
