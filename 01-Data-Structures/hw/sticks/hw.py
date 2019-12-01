@@ -2,7 +2,6 @@ import os
 import json
 import random
 from collections import namedtuple
-import numpy as np
 
 FILE_NAME1 = "winedata_1.json"
 FILE_NAME2 = "winedata_2.json"
@@ -37,7 +36,7 @@ def from_namedtuple_to_dict(wine):
 
 def out_file(out_dict, out_filename):
     try:
-        with open(out_filename, 'w', encoding='UTF-8') as f:
+        with open(out_filename, 'w', encoding='UTF-16') as f:
             json.dump(out_dict, f, ensure_ascii=False)
             print(f"файл {out_filename} создался успешно!")
     except:
@@ -132,7 +131,7 @@ for variety in lst_varieties:
     for wine in sorted_wines:
         if variety == wine.variety:
             selected_wines.append(wine)
-    if len(selected_wines) == 0:
+    if not selected_wines:
         continue
     prices = []
     score = []
@@ -147,12 +146,11 @@ for variety in lst_varieties:
         dict_common_region[wine.region_1] += 1
         prices.append(wine.price)
         score.append(int(wine.points))
-    prices = np.array(prices)
-    average_price = prices.mean()
-    max_price = prices.max()
-    min_price = prices.min()
-    score = np.array(score)
-    average_score = int(score.mean())
+    average_price = round(sum(prices)/len(prices),1)
+    max_price = max(prices)
+    min_price = min(prices)
+    min_price = min(prices)
+    average_score = round(sum(score)/len(score),1)
 
 #   * `most_common_region` где больше всего вин этого сорта производят ?
 #    most_common_country
@@ -167,9 +165,9 @@ for variety in lst_varieties:
         if count_wines > max_:
             max_ = count_wines
             most_common_region = region
-    variety = variety.replace('â','ae').replace('ü','ue')  #вместо немецких вставить общепринятые символы
+    variety = variety  #.replace('â','ae').replace('ü','ue')  #вместо немецких вставить общепринятые символы
     sort_wine[variety] = {"average_price":0, "min_price":0, "max_price":0, "most_common_country":0, "most_common_region":0, "average_score":0}
-    sort_wine[variety]["average_price"] = str(int(average_price))
+    sort_wine[variety]["average_price"] = str(average_price)
     sort_wine[variety]["min_price"] = str(min_price)
     sort_wine[variety]["max_price"] = str(max_price)
     sort_wine[variety]["most_common_country"] = most_common_country
@@ -196,12 +194,12 @@ i = len(sorted_wines) - 1
 while i >= 0:
     next_wine = sorted_wines[i]
     if cheapest_wine.price == next_wine.price:
-        lst_cheapest_wines.append(next_wine.title.replace('â','ae').replace('ü','ue'))
+        lst_cheapest_wines.append(next_wine.title)  #.replace('â','ae').replace('ü','ue'))
     else:
         break
     i -= 1
 
-statistics["most_expensive_wine"] = most_expensive_wine.title.replace('â','ae').replace('ü','ue') #вместо немецких вставить общепринятые символы
+statistics["most_expensive_wine"] = most_expensive_wine.title #.replace('â','ae').replace('ü','ue') #вместо немецких вставить общепринятые символы
 statistics["cheapest_wine"] = lst_cheapest_wines
 
     #   * `most_active_commentator`
@@ -261,10 +259,7 @@ statistics['most_expensive_coutry'] = most_expensive_coutry
 statistics['cheapest_coutry'] = cheapest_coutry
 
 #------------------------------------------------------
-max_ = 0
-for count_wines in dict_commentator.values():
-    if count_wines > max_:
-        max_ = count_wines
+max_ = max(dict_commentator.values())
 most_active_commentator = []
 for commentator,count_wines in dict_commentator.items():
     if count_wines == max_ and commentator is not None:
@@ -278,8 +273,32 @@ out_dict["statistics"] = statistics
 print(out_dict)
 out_file(out_dict, 'stats.json')
 
-#average_score!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+#--красивый MARKDOWN файл---------------
+fout = open('selected_wines_statistics.txt', 'wt', encoding='utf-16')
+for variety, sort_wine in statistics['wine'].items():
+    print('variety:', variety, file=fout, sep='\t')
+    print('average_price:',sort_wine['average_price'], file=fout, sep='\t')
+    print('min_price:',sort_wine['min_price'], file=fout, sep='\t')
+    print('max_price:',sort_wine['max_price'], file=fout, sep='\t')
+    print('most_common_region:',sort_wine['most_common_region'], file=fout, sep='\t')
+    print('most_common_country:', sort_wine['most_common_country'], file=fout, sep='\t')
+    print('average_score:',sort_wine['average_score'], file=fout, sep='\t')
+    print('------------------------------------------', file=fout)
+fout.close()
 
+fout = open('common_statistics.txt', 'wt', encoding='utf-16')
+most_expensive_wine = statistics["most_expensive_wine"]
+print("most_expensive_wine:", most_expensive_wine, file=fout, sep='\t')
+print("cheapest_wine:", statistics["cheapest_wine"], file=fout, sep='\t')
+print("highest_score:", statistics["highest_score"], file=fout, sep='\t')
+print("lowest_score:", statistics["lowest_score"], file=fout, sep='\t')
+print("most_rated_country:", statistics["most_rated_country"], file=fout, sep='\t')
+print("underrated_country:", statistics["underrated_country"], file=fout, sep='\t')
+print("most_expensive_coutry:", statistics["most_expensive_coutry"], file=fout, sep='\t')
+print("cheapest_coutry:", statistics["cheapest_coutry"], file=fout, sep='\t')
+print("most_active_commentator:", statistics["most_active_commentator"], file=fout, sep='\t')
+
+fout.close()
 
 
 
