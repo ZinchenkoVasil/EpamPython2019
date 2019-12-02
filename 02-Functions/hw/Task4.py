@@ -61,7 +61,7 @@ def modified_func(func, *fixated_args, **fixated_kwargs):
 
     """
 
- #   args, varargs, varkw, defaults)
+    modified_func.__name__ = 'func_' + func.__name__
     def new_func(*args, **kwargs):
         nonlocal fixated_args
         nonlocal fixated_kwargs
@@ -123,6 +123,8 @@ new_inc(0)
 new_inc(1)
 new_inc(2)
 print("Count of calls:", counter_inc[0])
+
+print(modified_func.__name__)
 
 
 
