@@ -9,12 +9,9 @@ FILE_NAME2 = "winedata_2.json"
 
 #преобразуем словарь в NamedTuple
 def from_dict_to_namedtuple(dict_):
-    Wine = namedtuple('Wine',['points','title','description','taster_name','taster_twitter_handle','price','designation',\
-                              'variety','region_1','region_2','province','country','winery'])
-    wine = Wine(dict_['points'], dict_['title'], dict_['description'], dict_['taster_name'], dict_['taster_twitter_handle'],\
-                dict_['price'], dict_['designation'], dict_['variety'], dict_['region_1'], dict_['region_2'],\
-                dict_['province'], dict_['country'], dict_['winery'])
-
+    Wine = namedtuple('Wine',dict_.keys())
+    args = tuple(dict_.values())
+    wine = Wine(*args)
     return wine
 
 def from_namedtuple_to_dict(wine):
