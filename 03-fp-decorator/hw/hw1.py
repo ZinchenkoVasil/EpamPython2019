@@ -1,3 +1,17 @@
+#--9
+
+
+SUM = 1000
+def func(a,b):
+    c = SUM - a - b
+    if a*a + b*b == c*c:
+        print(f"a={a}, b={b}, c={c}")
+
+print('----Task9-----')
+l1 = int(SUM / 2 + 1)
+l2 = int(SUM / 3 + 1)
+[func(a,b) for a in range(1,l2) for b in range(a+1,l1)]
+
 #--6
 #The sum of the squares of the first ten natural numbers is,
 
