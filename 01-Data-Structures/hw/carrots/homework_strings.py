@@ -36,6 +36,7 @@ import os
 import json
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 
 
 def translate_from_dna_to_rna(dna):
@@ -56,16 +57,33 @@ def count_nucleotides(dna):
     return num_of_nucleotides
 
 
+def read_file():
+    # Записываем объект Python в файл в виде JSON
+    in_filename = os.path.join('files', 'rna_codon_table.txt')
+    fin = open(in_filename, 'rt')
+    dict_rna_to_protein = {}
+    for line in fin:
+        lst = re.split('\s {2,6}', line)
+        for key_value in lst:
+            lst_key_value = re.split('\s+', key_value)
+            key = lst_key_value[0]
+            value = lst_key_value[1]
+            dict_rna_to_protein[key] = value
+    return dict_rna_to_protein
+    fin.close()
+
+
 def translate_rna_to_protein(rna):
-    dict_rna_to_protein = {
-        'UUU':'F','CUU':'L','AUU':'I','GUU':'V','UUC':'F','CUC':'L','AUC':'I','GUC':'V','UUA':'L','CUA':'L',\
-        'AUA':'I','GUA':'V','UUG':'L','CUG':'L','AUG':'M','GUG':'V','UCU':'S','CCU':'P','ACU':'T','GCU':'A',\
-        'UCC':'S','CCC':'P','ACC':'T','GCC':'A','UCA':'S','CCA':'P','ACA':'T','GCA':'A','UCG':'S','CCG':'P',\
-        'ACG':'T','GCG':'A','UAU':'Y','CAU':'H','AAU':'N','GAU':'D','UAC':'Y','CAC':'H','AAC':'N','GAC':'D',\
-        'UAA':'Stop','CAA':'Q','AAA':'K','GAA':'E','UAG':'Stop','CAG':'Q','AAG':'K','GAG':'E','UGU':'C','CGU':'R',\
-        'AGU':'S','GGU':'G','UGC':'C','CGC':'R','AGC':'S','GGC':'G','UGA':'Stop','CGA':'R','AGA':'R','GGA':'G',\
-        'UGG':'W','CGG':'R','AGG':'R','GGG':'G'
-    }
+#    dict_rna_to_protein = {
+#        'UUU':'F','CUU':'L','AUU':'I','GUU':'V','UUC':'F','CUC':'L','AUC':'I','GUC':'V','UUA':'L','CUA':'L',\
+#        'AUA':'I','GUA':'V','UUG':'L','CUG':'L','AUG':'M','GUG':'V','UCU':'S','CCU':'P','ACU':'T','GCU':'A',\
+#        'UCC':'S','CCC':'P','ACC':'T','GCC':'A','UCA':'S','CCA':'P','ACA':'T','GCA':'A','UCG':'S','CCG':'P',\
+#        'ACG':'T','GCG':'A','UAU':'Y','CAU':'H','AAU':'N','GAU':'D','UAC':'Y','CAC':'H','AAC':'N','GAC':'D',\
+#        'UAA':'Stop','CAA':'Q','AAA':'K','GAA':'E','UAG':'Stop','CAG':'Q','AAG':'K','GAG':'E','UGU':'C','CGU':'R',\
+#        'AGU':'S','GGU':'G','UGC':'C','CGC':'R','AGC':'S','GGC':'G','UGA':'Stop','CGA':'R','AGA':'R','GGA':'G',\
+#        'UGG':'W','CGG':'R','AGG':'R','GGG':'G'
+#    }
+    dict_rna_to_protein = read_file()
 
     protein = ""
     begin = 0
@@ -111,11 +129,9 @@ for name,gene in genes.items():
 out_filename = os.path.join('files','count_nucleotides.json')
 out_file(count_nucl,out_filename)
 
-#rna = translate_from_dna_to_rna(dna)
 out_filename = os.path.join('files','rna.json')
 out_file(rna,out_filename)
 
-#proteins = translate_rna_to_protein(rna)
 out_filename = os.path.join('files','proteins.json')
 out_file(proteins,out_filename)
 
