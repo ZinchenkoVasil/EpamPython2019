@@ -19,13 +19,21 @@ def from_namedtuple_to_dict(wine):
     dict_ = dict(d)
     return dict_
 
-def out_file(out_dict, out_filename):
+def out_file(out_dict, out_filename, encoding_table):
     try:
-        with open(out_filename, 'w', encoding='UTF-16') as f:
+        with open(out_filename, 'w', encoding=encoding_table) as f:
             json.dump(out_dict, f, ensure_ascii=False)
             print(f"файл {out_filename} создался успешно!")
     except:
         print("Ошибка при записи выходного файла JSON")
+
+def get_most_common_object(dict_):
+    max_ = 0
+    for key,value in dict_.items():
+        if value > max_:
+            max_ = value
+            most_common_object = key
+    return most_common_object
 
 def main():
     if os.path.exists(FILE_NAME1):
@@ -127,7 +135,7 @@ def main():
         prev_price = price
 
 
-    out_file(sorted_wines, 'winedata_full.json')
+    out_file(sorted_wines, 'winedata_full.json', 'UTF-8')
 
     print("-------------------------------------------------------------------------------------------------")
     statistics = {}
@@ -162,16 +170,10 @@ def main():
     #   * `most_common_region` где больше всего вин этого сорта производят ?
     #    most_common_country
     #используем словарь
-        max_ = 0
-        for country,count_wines in dict_common_country.items():
-            if count_wines > max_:
-                max_ = count_wines
-                most_common_country = country
-        max_ = 0
-        for region,count_wines in dict_common_region.items():
-            if count_wines > max_:
-                max_ = count_wines
-                most_common_region = region
+
+        most_common_country = get_most_common_object(dict_common_country) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        most_common_region = get_most_common_object(dict_common_region)
+
         variety = variety  #.replace('â','ae').replace('ü','ue')  #вместо немецких вставить общепринятые символы
         sort_wine[variety] = {"average_price":0, "min_price":0, "max_price":0, "most_common_country":0, "most_common_region":0, "average_score":0}
         sort_wine[variety]["average_price"] = str(average_price)
@@ -278,7 +280,7 @@ def main():
     out_dict = {}
     out_dict["statistics"] = statistics
     print(out_dict)
-    out_file(out_dict, 'stats.json')
+    out_file(out_dict, 'stats.json', 'UTF-16')
 
     #--красивый MARKDOWN файл---------------
     fout = open('selected_wines_statistics.txt', 'wt', encoding='utf-16')
