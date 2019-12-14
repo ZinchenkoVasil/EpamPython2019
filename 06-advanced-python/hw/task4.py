@@ -39,14 +39,8 @@ class PrintableFolder:
                 final_str += self._tree(full_file_name, level, final_str)
         return final_str
 
-
-class PrintableFile:
-    def __init__(self, name, dir_name):
-        self.name = name
-        self.dir_name = dir_name
-
-    def __str__(self):
-        return str(self._search(self.dir_name, self.name))
+    def __contains__(self, item):
+        return self._search(self.name, item.name)
 
     def _search(self, dir_name, searched_name):
         full_file_name = os.path.join(dir_name, searched_name)
@@ -60,11 +54,18 @@ class PrintableFile:
                         return True
         return False
 
+
+
+class PrintableFile:
+    def __init__(self, name):
+        self.name = name
+
+
 printableFolder = PrintableFolder(r'D:\EpamPython2019\06-advanced-python','111')
 print(printableFolder)
 
-printableFile = PrintableFile('task2.py', r'D:\EpamPython2019\06-advanced-python')
-print(printableFile)
+printableFile = PrintableFile('task2.py')
+print(printableFile in printableFolder)
 
 
 

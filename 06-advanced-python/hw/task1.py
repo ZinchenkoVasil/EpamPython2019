@@ -1,37 +1,43 @@
 """
-Реализовать метод __str__, позволяющий выводить все папки и файлы из данной, например так:
+E - dict(<V> : [<V>, <V>, ...])
+Ключ - строка, идентифицирующая вершину графа
+значение - список вершин, достижимых из данной
 
-> print(folder1)
-
-V folder1
-|-> V folder2
-|   |-> V folder3
-|   |   |-> file3
-|   |-> file2
-|-> file1
-
-А так же возможность проверить, находится ли файл или папка в другой папке:
-> print(file3 in folder2)
-True
+Сделать так, чтобы по графу можно было итерироваться(обходом в ширину)
 
 """
+import collections.abc
 
+class GraphIterator(collections.abc.Iterator):
+    def __init__(self, dict_, key, cursor, item):
+        self._dict = dict_
+        self._cur_key = key
+        self._cursor = cursor
+        self._item = item
 
-class PrintableFolder:
-    def __init__(self, name, content):
-        self.name = name
-        self.content = content
+    def __next__(self):
+        if self._cursor + 1 >= len(self._dict[self._cur_key]):
+            while True:
+                self._cur_key = next(self._item)
+                if len(self._dict[self._cur_key]) > 0:
+                    break
+            self._cursor = -1
 
-    def __str__(self):
-        pass
+        self._cursor += 1
+        print(f'{self._cursor} дочерний узел от узла {self._cur_key}:')
+        return self._dict[self._cur_key][self._cursor]
 
+class Graph:
+    def __init__(self, E):
+        self.E = E
+        key = iter(dict(E))
+    def __iter__(self):
+        item = iter(dict(E))
+        first_key = next(item)
+        return GraphIterator(self.E,first_key,-1,item)
 
-class PrintableFile:
-    def __init__(self, name):
-        self.name = name
+E = {'A': ['B', 'C', 'D'], 'B': ['C'], 'C': [], 'D': ['A']}
+graph = Graph(E)
 
-    def __str__(self):
-        pass
-
-
-
+for vertice in graph:
+    print(vertice)
