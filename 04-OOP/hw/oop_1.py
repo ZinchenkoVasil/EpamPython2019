@@ -47,19 +47,12 @@ class Homework:
         self.created = datetime.datetime.now()
 
     def is_active(self):
-        if self.created + self.deadline < datetime.datetime.now():
-            return False
-        else:
-            return True
-#    text - текст задания
-#    deadline - хранит объект datetime.timedelta с количеством
-#    дней на выполнение
-#    created - c точной датой и временем создания
+        return self.created + self.deadline >= datetime.datetime.now()
+
 class Student:
     def __init__(self, last_name, first_name):
         self.last_name = last_name
         self.first_name = first_name
-
 
     def do_homework(self,homework):
         if homework.is_active():
@@ -76,8 +69,6 @@ class Teacher:
     def create_homework(text, deadline):
         homework = Homework(text, deadline)
         return homework
-
-
 
 if __name__ == '__main__':
     teacher = Teacher('Daniil', 'Shadrin')
