@@ -11,7 +11,7 @@ class Factory:
              if litera in cls.products:
                  cls.products[litera] += 1
              else:
-                 cls.products[litera] = 0
+                 cls.products[litera] = 1
          cls.a = cls.products['A']
          cls.b = cls.products['B']
 
