@@ -110,10 +110,11 @@ class Teacher(Person):
     def reset_results(cls, homework=None):
         if homework and not isinstance(homework, Homework):
             raise TypeError('You gave a not Homework object')
-        if homework and homework in cls.homework_done:
-            cls.homework_done[homework] = []
+        if homework:
+            if homework in cls.homework_done:
+                del cls.homework_done[homework]
         else:
-            cls.homework_done = defaultdict(list)
+            cls.homework_done.clear()
 
 
 if __name__ == '__main__':
