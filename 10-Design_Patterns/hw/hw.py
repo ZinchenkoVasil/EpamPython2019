@@ -4,21 +4,31 @@ DUR_FROM_FACTORY_TO_PORT = 1
 DUR_FROM_FACTORY_TO_STORAGE_B = 5
 DUR_FROM_PORT_TO_STORAGE_A = 4
 
-class Factory:
+class Hub:
+    def __init__(self):
+        self.products_queue = Queue()  # Очередь продуктов
+
+    def get_product_from_queue(self):
+        if not self.products_queue.empty():
+            return self.products_queue.get()
+        return None
+
+    def put_product_to_queue(self, product):
+        self.products_queue.put(product)
+
+class Factory(Hub):
     def __init__(self, line_products):
-        self.products_queue = Queue()  # Очередь продуктов фабрики
+        self.products_queue = Queue()  # Очередь продуктов
         self.products = {'A': 0, 'B': 0}
         for litera in line_products:
-            self.products_queue.put(litera)
+            self.put_product_to_queue(litera)
             if  litera in self.products:
                 self.products[litera] += 1
             else:
                 self.products[litera] = 1
 
-class Port:
-    def __init__(self):
-        self.products_queue = Queue()  # Очередь в порт
-
+class Port(Hub):
+    pass
 
 storages = {'A': 0, 'B': 0}
 
@@ -32,20 +42,19 @@ class Transport:
             self.duration -= 1
 
 class Truck(Transport):
-    def move_product(self, factory, port):
+    def move_product(self, factory, port, lst_product_names):
         self._step_timer()
         if self.duration == 0:
-            if not factory.products_queue.empty():
-                self.curr_product = factory.products_queue.get()
-                if self.curr_product == 'A':
-                    self._from_factory_to_port()
-                elif self.curr_product == 'B':
-                    self._from_factory_to_storage()
+            self.curr_product = factory.get_product_from_queue()
+            if self.curr_product == lst_product_names[0]:
+                self._from_factory_to_port()
+            elif self.curr_product == lst_product_names[1]:
+                self._from_factory_to_storage()
 
-        if (self.duration == DUR_FROM_FACTORY_TO_PORT) and (self.curr_product == 'A'):
-            port.products_queue.put(self.curr_product)
+        if (self.duration == DUR_FROM_FACTORY_TO_PORT) and (self.curr_product == lst_product_names[0]):
+            port.put_product_to_queue(self.curr_product)
 
-        if (self.duration == DUR_FROM_FACTORY_TO_STORAGE_B) and (self.curr_product == 'B'):
+        if (self.duration == DUR_FROM_FACTORY_TO_STORAGE_B) and (self.curr_product == lst_product_names[1]):
             storages[self.curr_product] += 1
 
     def _from_factory_to_port(self):
@@ -55,15 +64,14 @@ class Truck(Transport):
         self.duration = DUR_FROM_FACTORY_TO_STORAGE_B * 2
 
 class Ship(Transport):
-    def move_from_port_to_storage(self, port):
+    def move_from_port_to_storage(self, port, lst_product_names):
         self._step_timer()
         if self.duration == 0:
-            if not port.products_queue.empty():
-                self.curr_product = port.products_queue.get()
-                if self.curr_product == 'A':
-                    self.duration = 2 * DUR_FROM_PORT_TO_STORAGE_A
+            self.curr_product = port.get_product_from_queue()
+            if self.curr_product == lst_product_names[0]:
+                self.duration = 2 * DUR_FROM_PORT_TO_STORAGE_A
 
-        if (self.duration == DUR_FROM_PORT_TO_STORAGE_A) and (self.curr_product == 'A'):
+        if (self.duration == DUR_FROM_PORT_TO_STORAGE_A) and (self.curr_product == lst_product_names[0]):
             storages[self.curr_product] += 1
 
 def main():
@@ -81,9 +89,9 @@ def main():
     while (storages['A'] < factory1.products['A']) or (storages['B'] < factory1.products['B']):
         #print(storageA.product)
         #print(storageB.product)
-        truck1.move_product(factory1, port1)
-        truck2.move_product(factory1, port1)
-        ship1.move_from_port_to_storage(port1)
+        truck1.move_product(factory1, port1, ['A','B'])
+        truck2.move_product(factory1, port1, ['A','B'])
+        ship1.move_from_port_to_storage(port1, ['A'])
         timer += 1
 
     print("delivery time: ", timer - 1)
