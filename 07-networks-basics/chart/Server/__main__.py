@@ -2,7 +2,7 @@
 import json
 import sys
 import argparse
-from Server.text import routes
+from Server import routes
 from Log.server_log_config import *
 import select
 from socket import socket, AF_INET, SOCK_STREAM
@@ -145,7 +145,6 @@ def mainloop():
            if not response_queue.empty():
                print("вход в бесконечный цикл")
                while True:
-
                    if response_queue.empty():
                        break
                    item = response_queue.get()
