@@ -2,8 +2,8 @@
 import json
 import sys
 import argparse
-from Server import routes
-from Log.server_log_config import *
+from routes import *
+#from Log.server_log_config import *
 import select
 from socket import socket, AF_INET, SOCK_STREAM
 from queue import Queue
@@ -13,7 +13,7 @@ user_dict = {}  # словарик где в качестве ключей nickn
 
 def parsing(data):
     print("вошли в parsing")
-    logger.debug("сервер принял сообщение от клиента")
+ #   logger.debug("сервер принял сообщение от клиента")
     request = json.loads(data)
     print("сервер принял сообщение от клиента")
     print("парсинг сообщения от клиента")
@@ -48,8 +48,8 @@ def parsing(data):
     else:
         response_dict['response'] = 401
         response_dict['alert'] = "Action don't support"
-        logger.error("Action don't support")
-        logger.error("клиент работает по неизвестному протоколу!")
+#        logger.error("Action don't support")
+#        logger.error("клиент работает по неизвестному протоколу!")
     return response_dict
 
 def read_request(responses,sock,all_clients):
@@ -154,7 +154,7 @@ def mainloop():
 
 # Обратите внимание, логгер уже создан в модуле log_config,
 # теперь нужно его просто получить
-logger.info('Запуск сервера-------------------------------------------------------------')
+#logger.info('Запуск сервера-------------------------------------------------------------')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-a', dest='addr', action='store', type=str, required=False, help='IP-address', default='localhost')

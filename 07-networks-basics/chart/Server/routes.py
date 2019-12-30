@@ -1,4 +1,4 @@
-from .controllers import (get_response, get_message, log_out)
+from controllers import (get_response, get_message, log_out)
 
 routes = [
     {'action': 'presence', 'controller': get_response},

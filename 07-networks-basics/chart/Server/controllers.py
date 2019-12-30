@@ -1,5 +1,5 @@
 #ответ сервера на запрос установления соединения
-from Server.decorators import *
+from decorators import *
 
 user_list = []
 

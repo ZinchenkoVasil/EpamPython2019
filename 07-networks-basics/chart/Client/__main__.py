@@ -5,7 +5,7 @@ import json
 import sys
 import time
 from threading import Thread
-from Log.client_log_config import *
+#from Log.client_log_config import *
 
 # Обратите внимание, логгер уже создан в модуле log_config,
 # теперь нужно его просто получить
@@ -26,7 +26,7 @@ def read_thread(sock):
         # необходимо сделать поток на чтение!
         try:
             data = sock.recv(1024)
-            logger.debug("Приняли сообщение от сервера")
+#            logger.debug("Приняли сообщение от сервера")
             response = json.loads(data.decode('utf-8'))
             if int(response["response"]) == 200:
                 print('\t\t\t\t'+response["alert"])
@@ -62,14 +62,14 @@ def echo_client(addr, port):
     # При выходе из оператора with сокет будет автоматически закрыт
     with socket(AF_INET, SOCK_STREAM) as sock: # Создать сокет TCP
         sock.connect((addr, port))   # Соединиться с сервером
-        logger.debug("Соединиться с сервером")
+#        logger.debug("Соединиться с сервером")
         user = input('Your nickname: ')
         message_from_client["user"]["account_name"] = user
         message_from_client['action'] = "presence"
         sock.send(json.dumps(message_from_client).encode())
-        logger.debug("Послали сообщение серверу")
+#        logger.debug("Послали сообщение серверу")
         data = sock.recv(1024)
-        logger.debug("Приняли приветствие от сервера")
+#        logger.debug("Приняли приветствие от сервера")
         response = json.loads(data.decode('utf-8'))
         if int(response["response"]) == 200:
             print(f"Hello, I am the server {addr}")
@@ -83,7 +83,7 @@ def echo_client(addr, port):
         time.sleep(10)
 
 if __name__ == '__main__':
-    logger.info('Запуск клиента-------------------------------------------------------------')
+#    logger.info('Запуск клиента-------------------------------------------------------------')
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', dest='addr', action='store', type=str, required=False, help='IP-address', default='localhost')
     parser.add_argument('-p', dest='port', action='store', type=int, required=False, help='Port', default=7777)
