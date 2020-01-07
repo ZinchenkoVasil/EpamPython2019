@@ -14,6 +14,8 @@ class GraphIterator(collections.abc.Iterator):
         self._cur_key = key
         self._cursor = cursor
         self._item = item
+        self.lst = []
+
 
     def __next__(self):
         if self._cursor + 1 >= len(self._dict[self._cur_key]):
@@ -24,8 +26,14 @@ class GraphIterator(collections.abc.Iterator):
             self._cursor = -1
 
         self._cursor += 1
-        print(f'{self._cursor} дочерний узел от узла {self._cur_key}:')
-        return self._dict[self._cur_key][self._cursor]
+        #вставить проверку на отсутствие повторений
+        next_ = self._dict[self._cur_key][self._cursor]
+        if next_ in self.lst:
+            return self.__next__()
+        else:
+            self.lst.append(next_)
+            print(f'{self._cursor} дочерний узел от узла {self._cur_key}:')
+            return next_
 
 class Graph:
     def __init__(self, E):
