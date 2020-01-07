@@ -61,10 +61,10 @@ class PrintableFile:
         self.name = name
 
 
-printableFolder = PrintableFolder(r'D:\EpamPython2019\06-advanced-python','111')
+printableFolder = PrintableFolder(r'.','111')
 print(printableFolder)
 
-printableFile = PrintableFile('task2.py')
+printableFile = PrintableFile('task22.py')
 print(printableFile in printableFolder)
 
 
