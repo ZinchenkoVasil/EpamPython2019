@@ -34,7 +34,7 @@ def main():
     _search(dir_name, searched_hash)
 
 #main()
-cProfile.run("main()")
+cProfile.run("main()"
 
 #Результаты профилирования в Windows 8:
 #   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
@@ -59,4 +59,46 @@ cProfile.run("main()")
 #в этой задаче в результате профилирования можно сказать, что самые "горячие" участки кода (узкие места):
 # вычисление hash-функции файла и чтение файла из файловой с-мы.
 
+#Результаты утилиты strace
+#strace -c python3 Task2_Code_profile2.py
+
+#% time     seconds  usecs/call     calls    errors syscall
+#------ ----------- ----------- --------- --------- ----------------
+# 87.42    9.607383        4689      2049           read
+#  7.95    0.873192        2781       314           getdents
+#  3.34    0.366716         146      2508        59 stat
+#  1.18    0.130099         109      1198         2 openat
+#  0.03    0.003785           3      1199           close
+#  0.02    0.002724           1      2227           fstat
+#  0.02    0.002145           1      2009         6 lseek
+#  0.01    0.001336          20        68           munmap
+#  0.01    0.001232           1       987       976 ioctl
+#  0.00    0.000482           5       103           mmap
+#  0.00    0.000209           6        33           write
+#  0.00    0.000144           8        18           mprotect
+#  0.00    0.000107           5        21           brk
+#  0.00    0.000045           5         9         9 access
+#  0.00    0.000033           4         9           lstat
+#  0.00    0.000013           3         4         2 readlink
+#  0.00    0.000005           2         3           dup
+#  0.00    0.000004           0        68           rt_sigaction
+#  0.00    0.000004           4         1           execve
+#  0.00    0.000004           1         3           fcntl
+#  0.00    0.000004           4         1           sysinfo
+#  0.00    0.000003           3         1           getrandom
+#  0.00    0.000002           2         1           getcwd
+#  0.00    0.000002           2         1           arch_prctl
+#  0.00    0.000001           1         1           rt_sigprocmask
+#  0.00    0.000001           1         1           getuid
+#  0.00    0.000001           1         1           geteuid
+#  0.00    0.000001           1         1           getegid
+#  0.00    0.000001           0         3           sigaltstack
+#  0.00    0.000001           1         2           futex
+#  0.00    0.000001           1         1           set_tid_address
+#  0.00    0.000001           1         1           set_robust_list
+#  0.00    0.000001           1         1           prlimit64
+#  0.00    0.000000           0         1           getpid
+#  0.00    0.000000           0         1           getgid
+#------ ----------- ----------- --------- --------- ----------------
+#100.00   10.989682                 12849      1054 total
 
