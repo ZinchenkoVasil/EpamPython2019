@@ -31,10 +31,17 @@ class Quaternion:
     def __rsub__(self, other):
         return Quaternion(other.a - self.a, other.b - self.b, other.c - self.c, other.d - self.d)
     def __mul__(self, other):
-        #скалярное произведение
-        return self.a * other.a + self.b * other.b + self.c * other.c + self.d * other.d
+        a = self.a * other.a - self.b * other.b - self.c * other.c - self.d * other.d
+        b = self.a * other.b + self.b * other.a + self.c * other.d - self.d * other.c
+        c = self.a * other.c + self.c * other.a + self.d * other.b - self.b * other.d
+        d = self.a * other.d + self.d * other.a + self.b * other.c - self.c * other.b
+        return Quaternion(a, b, c, d)
     def __rmul__(self, other):
-        return self.a * other.a + self.b * other.b + self.c * other.c + self.d * other.d
+        a = self.a * other.a - self.b * other.b - self.c * other.c - self.d * other.d
+        b = self.a * other.b + self.b * other.a + self.c * other.d - self.d * other.c
+        c = self.a * other.c + self.c * other.a + self.d * other.b - self.b * other.d
+        d = self.a * other.d + self.d * other.a + self.b * other.c - self.c * other.b
+        return Quaternion(a, b, c, d)
     def __div__(self, other):
         pass
     def __abs__(self):
