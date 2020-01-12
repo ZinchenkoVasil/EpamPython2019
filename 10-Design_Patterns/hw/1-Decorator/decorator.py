@@ -13,6 +13,30 @@ class BaseCoffe(Component):
     def get_cost(self):
         return 90
 
+class Whip:
+    def __init__(self, coffe):
+        self.coffe = coffe
+        self.cost = 10
+
+    def get_cost(self):
+        return self.coffe.get_cost() + self.cost
+
+class Marshmallow:
+    def __init__(self, coffe):
+        self.coffe = coffe
+        self.cost = 20
+
+    def get_cost(self):
+        return self.coffe.get_cost() + self.cost
+
+class Syrup:
+    def __init__(self, coffe):
+        self.coffe = coffe
+        self.cost = 10
+
+    def get_cost(self):
+        return self.coffe.get_cost() + self.cost
+
 
 if __name__ == "__main__":
     coffe = BaseCoffe()
