@@ -25,14 +25,17 @@ class GraphIterator(collections.abc.Iterator):
                     break
             self._cursor = -1
 
+        if self._cursor == -1:
+            next_ = self._cur_key
+        else:
+            next_ = self._dict[self._cur_key][self._cursor]
+
         self._cursor += 1
         #вставить проверку на отсутствие повторений
-        next_ = self._dict[self._cur_key][self._cursor]
         if next_ in self.lst:
             return self.__next__()
         else:
             self.lst.append(next_)
-            print(f'{self._cursor} дочерний узел от узла {self._cur_key}:')
             return next_
 
 class Graph:
