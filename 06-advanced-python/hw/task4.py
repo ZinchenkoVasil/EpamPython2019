@@ -25,22 +25,28 @@ class PrintableFolder:
     def __str__(self):
         if os.path.exists(self.name):
             final_str = self.name + '\n'
-            return self._tree(self.name, -1, final_str)
+            return self._tree(self.name, final_str)
         else:
-            print('File not found!')
+            return 'Directory not found!'
 
-    def _tree(self, dir_name, level, final_str):
+    def _tree(self, dir_name, final_str, level=-1):
         level += 1
+        if len(os.listdir(dir_name)) == 0:
+            return final_str
         for file_name in os.listdir(dir_name):
             final_str += level * ' ' + '|->' + file_name + '\n'
-            full_file_name = os.path.join(dir_name, file_name)
 
+        for file_name in os.listdir(dir_name):
+            full_file_name = os.path.join(dir_name, file_name)
             if os.path.isdir(full_file_name):
-                final_str += self._tree(full_file_name, level, final_str)
-        return final_str
+                return self._tree(full_file_name, final_str, level)
 
     def __contains__(self, item):
-        return self._search(self.name, item.name)
+        if not os.path.exists(self.name):
+            print('Directory not found!')
+            return False
+        else:
+            return self._search(self.name, item.name)
 
     def _search(self, dir_name, searched_name):
         full_file_name = os.path.join(dir_name, searched_name)
@@ -52,7 +58,7 @@ class PrintableFolder:
                 if os.path.isdir(full_file_name):
                     if self._search(full_file_name, searched_name):
                         return True
-        return False
+            return False
 
 
 
@@ -61,10 +67,10 @@ class PrintableFile:
         self.name = name
 
 
-printableFolder = PrintableFolder(r'.','111')
+printableFolder = PrintableFolder(r'ddssd','111')
 print(printableFolder)
 
-printableFile = PrintableFile('task22.py')
+printableFile = PrintableFile('task4.py')
 print(printableFile in printableFolder)
 
 
