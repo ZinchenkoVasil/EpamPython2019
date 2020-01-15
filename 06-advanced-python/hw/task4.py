@@ -17,7 +17,7 @@ True
 """
 import os
 
-full_file_name = ''
+final_str = ''
 
 class PrintableFolder:
     def __init__(self, name, content):
