@@ -17,6 +17,8 @@ True
 """
 import os
 
+full_file_name = ''
+
 class PrintableFolder:
     def __init__(self, name, content):
         self.name = name
@@ -24,22 +26,23 @@ class PrintableFolder:
 
     def __str__(self):
         if os.path.exists(self.name):
+            global final_str
             final_str = self.name + '\n'
-            return self._tree(self.name, final_str)
+            self._tree(self.name)
+            return final_str
         else:
             return 'Directory not found!'
 
-    def _tree(self, dir_name, final_str, level=-1):
+    def _tree(self, dir_name, level=-1):
         level += 1
         if len(os.listdir(dir_name)) == 0:
-            return final_str
+            return
         for file_name in os.listdir(dir_name):
+            global final_str
             final_str += level * ' ' + '|->' + file_name + '\n'
-
-        for file_name in os.listdir(dir_name):
             full_file_name = os.path.join(dir_name, file_name)
             if os.path.isdir(full_file_name):
-                return self._tree(full_file_name, final_str, level)
+                self._tree(full_file_name, level)
 
     def __contains__(self, item):
         if not os.path.exists(self.name):
@@ -61,13 +64,12 @@ class PrintableFolder:
             return False
 
 
-
 class PrintableFile:
     def __init__(self, name):
         self.name = name
 
 
-printableFolder = PrintableFolder(r'ddssd','111')
+printableFolder = PrintableFolder(r'.','111')
 print(printableFolder)
 
 printableFile = PrintableFile('task4.py')
